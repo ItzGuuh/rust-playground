@@ -58,11 +58,19 @@ impl Deck {
         self.cards.shuffle(&mut rng);
     }
     pub fn cut(&mut self, random_number: Option<usize>) {
-        let mut top_half = self
-            .cards
-            .split_off(random_number.unwrap_or(thread_rng().gen_range(MIN_CARDS..MAX_CARDS)));
+        let cut_number = random_number.unwrap_or(thread_rng().gen_range(MIN_CARDS..MAX_CARDS));
+        let mut top_half = self.cards.split_off(cut_number);
         top_half.append(&mut self.cards);
         self.cards = top_half;
+    }
+    pub fn get_n_cards_from_top(&mut self, random_number: Option<usize>) -> Vec<Card> {
+        let n_top_numbers = random_number.unwrap_or(1);
+        let final_length = self.cards.len().saturating_sub(n_top_numbers);
+        return self.cards.split_off(final_length);
+    }
+    pub fn full_suffle(&mut self) {
+        self.shuffle();
+        self.cut(None);
     }
 }
 
