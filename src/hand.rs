@@ -1,3 +1,0 @@
-struct Hand {
-    cards: CardAmount,
-}
